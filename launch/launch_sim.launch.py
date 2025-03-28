@@ -2,41 +2,46 @@ import os
 from time import time
 
 from ament_index_python.packages import get_package_share_directory
-
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, TimerAction
+from launch.actions import (DeclareLaunchArgument, SetEnvironmentVariable, 
+                            IncludeLaunchDescription, TimerAction, SetLaunchConfiguration)
+from launch.substitutions import PathJoinSubstitution, LaunchConfiguration, TextSubstitution
+from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
-from launch_ros.actions import Node
 
 def generate_launch_description():
+    # Define package paths
+    pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
+    pkg_traxxas = get_package_share_directory('traxxas')  
 
-    package_name='traxxas'
+    # Gazebo launch file path
+    gz_launch_path = PathJoinSubstitution([pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py'])
+    gz_model_path = PathJoinSubstitution([pkg_traxxas, 'models'])
 
+    # World file path
+    world_file = os.path.join(pkg_traxxas, 'worlds', 'empty.world')
+
+    # Include the robot state publisher launch file
     rsp = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory(package_name),'launch','rsp.launch.py'
+                    get_package_share_directory('traxxas'), 'launch', 'rsp.launch.py'
                 )]), launch_arguments={'use_sim_time': 'true'}.items()
     )
 
-    # Use get_package_share_directory to get the correct path for the world file
-    world_file = os.path.join(
-                    get_package_share_directory('traxxas'), 'worlds', 'empty.world'
-    )  
-
-    # Include the Gazebo launch file, provided by the gazebo_ros package
+    # Include the Gazebo launch file with world argument
     gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            os.path.join(
-                get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py'
-            )]),
-        launch_arguments={'world': world_file}.items()
+        PythonLaunchDescriptionSource([gz_launch_path]),
+        launch_arguments={
+            'gz_args': [PathJoinSubstitution([pkg_traxxas, 'worlds',
+                                              LaunchConfiguration('world_file')])],
+            'on_exit_shutdown': 'True'
+        }.items(),
     )
 
-    # Run the spawner node from the gazebo_ros package. The entity name doesn't really matter if you only have a single robot.
-    # Add a timer to allow Gazebo to start properly before spawning the robot
-    spawn_delay = TimerAction(
-        period=1.0,  # wait for 1 seconds
+    # Timer to wait for Gazebo to start and then spawn the robot
+    spawn_entity = TimerAction(
+        period=1.0,  # wait for 1 second
         actions=[
             Node(
                 package='ros_gz_sim',
@@ -47,9 +52,18 @@ def generate_launch_description():
         ]
     )
 
-    # Launch them all!
+    # Return the combined launch description
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'world',
+            default_value='empty',
+            description='World to load into Gazebo'
+        ),
+        SetLaunchConfiguration(name='world_file', 
+                               value=[LaunchConfiguration('world'), 
+                                      TextSubstitution(text='.world')]),
+        SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', gz_model_path),
         rsp,
         gazebo,
-        spawn_delay,
+        spawn_entity
     ])
