@@ -1,9 +1,10 @@
 import os
+from time import time
 
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 from launch_ros.actions import Node
@@ -33,16 +34,22 @@ def generate_launch_description():
     )
 
     # Run the spawner node from the gazebo_ros package. The entity name doesn't really matter if you only have a single robot.
-    spawn_entity = Node(
-        package='ros_gz_sim',
-        executable='create',
-        arguments=['-topic', '/robot_description', '-entity', 'traxxas'],
-        output='screen'
+    # Add a timer to allow Gazebo to start properly before spawning the robot
+    spawn_delay = TimerAction(
+        period=1.0,  # wait for 1 seconds
+        actions=[
+            Node(
+                package='ros_gz_sim',
+                executable='create',
+                arguments=['-topic', '/robot_description', '-entity', 'traxxas'],
+                output='screen'
+            )
+        ]
     )
 
     # Launch them all!
     return LaunchDescription([
         rsp,
         gazebo,
-        spawn_entity,
+        spawn_delay,
     ])

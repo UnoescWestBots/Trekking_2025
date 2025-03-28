@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <gazebo>
-        <plugin name="ackermann_steering" filename="libignition-gazebo6-ackermann-steering-system.so.6.17.0">
+        <plugin name="ignition::gazebo::systems::AckermannSteering" filename="libignition-gazebo6-ackermann-steering-system.so">
             <ros>
                 <namespace></namespace>
                 <remapping>cmd_vel:=cmd_vel</remapping>
