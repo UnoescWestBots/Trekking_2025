@@ -52,6 +52,19 @@ def generate_launch_description():
         ]
     )
 
+    ign_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        name="ign_bridge",
+        arguments=[
+            "/clock" + "@rosgraph_msgs/msg/Clock" + "[ignition.msgs.Clock",
+            "/cmd_vel" + "@geometry_msgs/msg/Twist" + "@ignition.msgs.Twist",
+            "/tf" + "@tf2_msgs/msg/TFMessage" + "[ignition.msgs.Pose_V",
+            "/odom" + "@nav_msgs/msg/Odometry" + "[ignition.msgs.Odometry",
+        ],
+        output="screen",
+    )
+
     # Return the combined launch description
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -62,8 +75,9 @@ def generate_launch_description():
         SetLaunchConfiguration(name='world_file', 
                                value=[LaunchConfiguration('world'), 
                                       TextSubstitution(text='.world')]),
-        SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', gz_model_path),
+        SetEnvironmentVariable('IGN_GAZEBO_RESOURCE_PATH', gz_model_path),
         rsp,
         gazebo,
-        spawn_entity
+        spawn_entity,
+        ign_bridge
     ])
