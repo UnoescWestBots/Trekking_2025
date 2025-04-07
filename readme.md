@@ -629,9 +629,11 @@ ros2 launch trekking_2025 rviz.launch.py
 ```
 Add set fixed frame to `link_chassis` and add RobotModel visualization. 
 
-- To test the whole simulation, run:
+- To test the whole simulation and the control, run:
 ```bash
 ros2 launch trekking_2025 simulation.launch.py
+
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
 
 Do not run these 2 launch files at the same time.

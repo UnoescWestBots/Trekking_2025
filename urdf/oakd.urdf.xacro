@@ -30,7 +30,7 @@
             <visual>
                 <geometry>
                     <mesh
-                        filename="package://gazebo_project/meshes/${name}_${model}.dae"
+                        filename="package://trekking_2025/meshes/${name}_${model}.dae"
                         scale="1 1 1" />
                 </geometry>
             </visual>

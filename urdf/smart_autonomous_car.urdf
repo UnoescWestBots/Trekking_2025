@@ -22,7 +22,7 @@
     <visual name="chassis_visual">
       <origin rpy="1.57 0 1.57" xyz="0.107 0.105 -0.095" />
       <geometry>
-        <mesh filename="package://Trekking_2025/meshes/Chassi_RC.obj"
+        <mesh filename="package://trekking_2025/meshes/Chassi_RC.obj"
           scale="0.15 0.14 0.156" />
       </geometry>
       <material name="white">
