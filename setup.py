@@ -2,7 +2,7 @@ import os
 from glob import glob
 from setuptools import find_packages, setup
 
-package_name = "Trekking_2025"
+package_name = "trekking_2025"
 
 setup(
     name=package_name,

@@ -3,7 +3,7 @@
 
     <xacro:macro name="oakd" params="name:=oakd parent_link *origin model:=pro">
         <xacro:include
-            filename="$(find Trekking_2025)/urdf/common_properties.urdf.xacro" />
+            filename="$(find trekking_2025)/urdf/common_properties.urdf.xacro" />
 
         <xacro:property name="mass" value="0.061" />
         <xacro:property name="baseline" value="0.075" />

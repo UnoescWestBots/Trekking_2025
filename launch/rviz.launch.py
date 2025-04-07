@@ -7,7 +7,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     use_sim_time = True
-    package_directory = get_package_share_directory("Trekking_2025")
+    package_directory = get_package_share_directory("trekking_2025")
     # path of the robot urdf file
     robot_desc_path = os.path.join(package_directory, "urdf", "smart_autonomous_car.urdf")
     rviz_config_path = os.path.join(package_directory, "rviz", "config.rviz")
