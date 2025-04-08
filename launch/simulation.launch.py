@@ -42,7 +42,7 @@ def generate_launch_description():
     )
 
     # Load the urdf
-    urdf_file = "smart_autonomous_car.urdf"
+    urdf_file = "robot.urdf"
     robot_desc_path = os.path.join(package_directory, "urdf", urdf_file)
 
     robot_state_publisher_node = Node(
