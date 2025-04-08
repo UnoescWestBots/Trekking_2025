@@ -3,9 +3,19 @@
 <robot name="robot" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find trekking_2025)/urdf/oakd.urdf.xacro" />
   <xacro:include filename="$(find trekking_2025)/urdf/common_properties.urdf.xacro" />
+  <xacro:include filename="$(find trekking_2025)/urdf/hokuyo_ust10lx.urdf.xacro"/>
+
   <xacro:property name="oakd_pro_x_offset" value="0.2" />
   <xacro:property name="oakd_pro_y_offset" value="0.0" />
   <xacro:property name="oakd_pro_z_offset" value="0.30" />
+
+  <xacro:sensor_hokuyo_ust10lx
+    name="hokuyo"
+    parent="link_chassis"
+    color="black"
+    visualize="true">
+    <origin xyz="0.1 0.0 0.35" rpy="0 0 0"/>
+  </xacro:sensor_hokuyo_ust10lx>
 
   <link name="base_link">
     <xacro:cuboid_inertia mass="1.0" x="0.1" y="0.1" z="0.1" />

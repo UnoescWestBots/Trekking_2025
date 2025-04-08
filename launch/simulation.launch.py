@@ -110,23 +110,34 @@ def generate_launch_description():
         executable="parameter_bridge",
         name="ign_bridge",
         arguments=[
+            # Tempo
             "/clock" + "@rosgraph_msgs/msg/Clock" + "[ignition.msgs.Clock",
+
+            # Movimento e Odometria
             "/cmd_vel" + "@geometry_msgs/msg/Twist" + "@ignition.msgs.Twist",
             "/tf" + "@tf2_msgs/msg/TFMessage" + "[ignition.msgs.Pose_V",
             "/odom" + "@nav_msgs/msg/Odometry" + "[ignition.msgs.Odometry",
+
+            # Estados e Sensores
             f"/world/{world}/model/my_robot/joint_state"
             + "@sensor_msgs/msg/JointState"
             + "[ignition.msgs.Model",
             "/imu" + "@sensor_msgs/msg/Imu" + "[ignition.msgs.IMU",
             "/navsat" + "@sensor_msgs/msg/NavSatFix" + "[ignition.msgs.NavSat",
-            # "/laser/scan" + "@sensor_msgs/msg/LaserScan" + "[ignition.msgs.LaserScan",
-            f"/world/{world}/pose/info"
-            + "@geometry_msgs/msg/PoseArray"
-            + "[ignition.msgs.Pose_V",
+
+            # Lidar Hokuyo
+            f"/world/{world}/model/my_robot/link/hokuyo_front_link/sensor/hokuyo_front_sensor/scan"
+            + "@sensor_msgs/msg/LaserScan"
+            + "[ignition.msgs.LaserScan",
+
+            # Poses Globais no Mundo
+            f"/world/{world}/pose/info@geometry_msgs/msg/PoseArray[ignition.msgs.Pose_V",
+
         ],
         remappings=[
             (f"/world/{world}/model/my_robot/joint_state", "/joint_states"),
             (f"/world/{world}/pose/info", "/pose_info"),
+            (f"/world/{world}/model/my_robot/link/hokuyo_front_link/sensor/hokuyo_front_sensor/scan", "laser/scan"),
         ],
         output="screen",
     )
