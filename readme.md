@@ -1,5 +1,7 @@
 # GAZEBO IGNITION - ROS 2 - HUMBLE - TREKKING 2025
 
+### Editor: Carlos Leonardo Lazzari
+
 ## Contents
 - [Dependencies](#dependencies)
 - [Creating the ros package](#creating-the-ros-package)
