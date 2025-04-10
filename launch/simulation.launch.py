@@ -126,9 +126,8 @@ def generate_launch_description():
             "/navsat" + "@sensor_msgs/msg/NavSatFix" + "[ignition.msgs.NavSat",
 
             # Lidar Hokuyo
-            f"/world/{world}/model/my_robot/link/hokuyo_front_link/sensor/hokuyo_front_sensor/scan"
-            + "@sensor_msgs/msg/LaserScan"
-            + "[ignition.msgs.LaserScan",
+            "/hokuyo/scan" + "@sensor_msgs/msg/LaserScan" + "[ignition.msgs.LaserScan",
+            "/hokuyo/scan/points@sensor_msgs/msg/PointCloud2[ignition.msgs.PointCloudPacked",
 
             # Poses Globais no Mundo
             f"/world/{world}/pose/info@geometry_msgs/msg/PoseArray[ignition.msgs.Pose_V",
@@ -137,7 +136,8 @@ def generate_launch_description():
         remappings=[
             (f"/world/{world}/model/my_robot/joint_state", "/joint_states"),
             (f"/world/{world}/pose/info", "/pose_info"),
-            (f"/world/{world}/model/my_robot/link/hokuyo_front_link/sensor/hokuyo_front_sensor/scan", "laser/scan"),
+            ("/hokuyo/scan", "lidar/scan"),
+            ("/hokuyo/scan/points", "lidar/points"),
         ],
         output="screen",
     )
