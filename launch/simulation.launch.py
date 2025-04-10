@@ -163,6 +163,18 @@ def generate_launch_description():
         ],
     )
 
+    lidar_tf_node = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="lidar_tf_publisher",
+        arguments=[
+            "0.1", "0", "0.2", "0", "0", "0",  
+            "base_link",  
+            "my_robot/base_link/hokuyo_sensor", 
+        ],
+        remappings=[("/tf", "tf"), ("/tf_static", "tf_static")],
+    )
+
     cam_tf_node = Node(
         name="camera_stf",
         package="tf2_ros",
@@ -289,6 +301,7 @@ def generate_launch_description():
             gz_spawn_entity,
             ign_bridge,
             cam_tf_node,
+            lidar_tf_node,
             oakd_camera_bridge,
         ]
     )
