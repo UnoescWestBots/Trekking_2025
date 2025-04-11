@@ -601,8 +601,10 @@ This launch file launches 1 launch file and runs 3 nodes:
 
 ---
 ## Bridge Between ROS 2 and Gazebo
-To integrate ROS 2 with Ignition Gazebo, the ros_gz_bridge package is used to enable communication between both systems. It allows ROS 2 to send commands (e.g., velocity), receive sensor data (e.g., LIDAR, odometry), sync simulation time, and handle coordinate transforms (TFs).
-'''python
+To integrate ROS 2 with Ignition Gazebo, the ros_gz_bridge package is used to enable communication between both systems. 
+It allows ROS 2 to send commands (e.g., velocity), receive sensor data (e.g., LIDAR, odometry), sync simulation time, and handle coordinate transforms (TFs).
+
+```python
 ign_bridge = Node(
     package="ros_gz_bridge",
     executable="parameter_bridge",
@@ -627,7 +629,7 @@ ign_bridge = Node(
     ],
     output="screen",
 )
-'''
+```
 ---
 
 ---
