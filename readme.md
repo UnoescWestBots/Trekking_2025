@@ -631,8 +631,6 @@ ign_bridge = Node(
 )
 ```
 ---
-
----
 ## Building and Testing
 
 To build the project, it is needed to add the new directories to the `setup.py`
