@@ -10,7 +10,6 @@
 - [Simulation Launch File](#simulation-launch-file)
 - [Building](#building-and-testing)
 
-
 ## Dependencies
 
 You need to install ROS 2 humble and Gazebo Sim for this project.
@@ -96,7 +95,7 @@ Chassis' visual will be a .obj file named smart_car.obj that located in meshes f
     <visual name="chassis_visual">
       <origin rpy="1.57 0 1.57" xyz="0 0 0" />
       <geometry>
-        <mesh filename="package://trekking_2025/meshes/smart_car.obj"
+        <mesh filename="package://trekking_2025/meshes/car.obj"
           scale="0.012 0.012
         0.013" />
       </geometry>
@@ -577,12 +576,12 @@ Adding the directional light named sun to 10m above:
         </light>
 ```
 
-Add the apartment model 20 away through x-axis.
+Add the COnstruction Cone model 20 away through x-axis.
 
 ```xml
         <include>
             <uri>
-                https://fuel.gazebosim.org/1.0/chapulina/models/Apartment
+                https://fuel.gazebosim.org/1.0/OpenRobotics/models/Construction Cone
             </uri>
             <name>apartment</name>
             <pose>20 0 0 0 0 0</pose>
@@ -600,6 +599,36 @@ This launch file launches 1 launch file and runs 3 nodes:
 - Gazebo Sim Create node spawns the robot published from robot state publisher to the sim world with specified name and coordinates
 - Gazebo Bridge creates a communication bridge between ros and gazebo to send messages like `/cmd_vel` `/imu` etc.
 
+---
+## Bridge Between ROS 2 and Gazebo
+To integrate ROS 2 with Ignition Gazebo, the ros_gz_bridge package is used to enable communication between both systems. It allows ROS 2 to send commands (e.g., velocity), receive sensor data (e.g., LIDAR, odometry), sync simulation time, and handle coordinate transforms (TFs).
+'''python
+ign_bridge = Node(
+    package="ros_gz_bridge",
+    executable="parameter_bridge",
+    name="ign_bridge",
+    arguments=[
+        # Relógio simulado
+        "/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock",
+
+        # Movimento e odometria
+        "/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist",
+        "/odom@nav_msgs/msg/Odometry[ignition.msgs.Odometry",
+
+        # Lidar
+        "/hokuyo/scan@sensor_msgs/msg/LaserScan[ignition.msgs.LaserScan",
+
+        # TFs
+        "/tf@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V",
+    ],
+    remappings=[
+        ("/hokuyo/scan", "lidar/scan"),
+        ("/odom", "odom"),
+    ],
+    output="screen",
+)
+'''
+---
 
 ---
 ## Building and Testing
