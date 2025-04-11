@@ -23,7 +23,7 @@ def generate_launch_description():
         os.environ["IGN_GAZEBO_RESOURCE_PATH"] = ":".join(gazebo_resource_paths)
 
     # Load Demo World SDF from Robot Description Package
-    world = "demo_world"
+    world = "world_trekking"
 
     world_file = f"{world}.sdf"
     world_file_path = os.path.join(package_directory, "worlds", world_file)
@@ -181,9 +181,9 @@ def generate_launch_description():
         executable="static_transform_publisher",
         output="screen",
         arguments=[
+            "0.2",
             "0",
-            "0",
-            "0",
+            "0.3",
             "1.5707",
             "-1.5707",
             "0",
